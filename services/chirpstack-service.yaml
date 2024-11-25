@@ -8,11 +8,10 @@ metadata:
     io.kompose.service: chirpstack
   name: chirpstack
 spec:
+  type: LoadBalancer
   ports:
     - name: "8080"
       port: 8080
       targetPort: 8080
   selector:
     io.kompose.service: chirpstack
-status:
-  loadBalancer: {}
