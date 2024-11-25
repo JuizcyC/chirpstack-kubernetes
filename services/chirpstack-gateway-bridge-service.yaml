@@ -9,6 +9,7 @@ metadata:
   name: chirpstack-gateway-bridge
 spec:
   type: LoadBalancer
+  loadBalancerIP: 74.179.219.221
   ports:
     - name: "1700"
       port: 1700
