@@ -8,6 +8,7 @@ metadata:
     io.kompose.service: node-red
   name: node-red
 spec:
+  type: LoadBalancer
   ports:
     - name: "1880"
       port: 1880
