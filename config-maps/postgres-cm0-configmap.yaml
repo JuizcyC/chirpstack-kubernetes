@@ -19,5 +19,5 @@ data:
 kind: ConfigMap
 metadata:
   labels:
-    io.kompose.service: postgres
+    io.kompose.service: postgresql
   name: postgres-cm0
