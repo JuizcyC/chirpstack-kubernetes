@@ -9,6 +9,7 @@ metadata:
   name: node-red
 spec:
   type: LoadBalancer
+  loadBalancerIP: 48.216.202.42
   ports:
     - name: "1880"
       port: 1880
