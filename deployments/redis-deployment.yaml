@@ -3,8 +3,7 @@ kind: Deployment
 metadata:
   annotations:
     kompose.cmd: kompose convert
-    kompose.version: 1.21.0 (992df58d8)
-  creationTimestamp: null
+    kompose.version: 1.34.0 (cbf2835db)
   labels:
     io.kompose.service: redis
   name: redis
@@ -19,25 +18,28 @@ spec:
     metadata:
       annotations:
         kompose.cmd: kompose convert
-        kompose.version: 1.21.0 (992df58d8)
-      creationTimestamp: null
+        kompose.version: 1.34.0 (cbf2835db)
       labels:
         io.kompose.service: redis
     spec:
       containers:
-      - image: redis:5-alpine
-        imagePullPolicy: ""
-        name: redis
-        ports:
-        - containerPort: 6379
-        resources: {}
-        volumeMounts:
-        - mountPath: /data
-          name: redisdata
+        - args:
+            - redis-server
+            - --save
+            - "300"
+            - "1"
+            - --save
+            - "60"
+            - "100"
+            - --appendonly
+            - "no"
+          image: redis:7-alpine
+          name: redis
+          volumeMounts:
+            - mountPath: /data
+              name: redisdata
       restartPolicy: Always
-      serviceAccountName: ""
       volumes:
-      - name: redisdata
-        persistentVolumeClaim:
-          claimName: redisdata
-status: {}
+        - name: redisdata
+          persistentVolumeClaim:
+            claimName: redisdata

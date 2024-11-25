@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   annotations:
     kompose.cmd: kompose convert
-    kompose.version: 1.34.0 (cbf2835db)
+    kompose.version: 1.21.0 (992df58d8)
   labels:
     io.kompose.service: mosquitto
   name: mosquitto
@@ -12,27 +12,26 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: mosquitto
-  strategy:
-    type: Recreate
   template:
     metadata:
       annotations:
         kompose.cmd: kompose convert
-        kompose.version: 1.34.0 (cbf2835db)
+        kompose.version: 1.21.0 (992df58d8)
       labels:
         io.kompose.service: mosquitto
     spec:
       containers:
-        - image: eclipse-mosquitto:2
-          name: mosquitto
-          ports:
-            - containerPort: 1883
-              protocol: TCP
-          volumeMounts:
-            - mountPath: /mosquitto/config
-              name: mosquitto-cm0
+      - image: eclipse-mosquitto
+        name: mosquitto
+        ports:
+        - containerPort: 1883
+        volumeMounts:
+        - name: mosquitto-config-volume
+          mountPath: /mosquitto/config/mosquitto.conf
+          subPath: mosquitto.conf
       restartPolicy: Always
       volumes:
-        - configMap:
-            name: mosquitto-cm0
-          name: mosquitto-cm0
+      - name: mosquitto-config-volume
+        configMap:
+          name: mosquitto-config
+
