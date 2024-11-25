@@ -22,6 +22,13 @@ spec:
       labels:
         io.kompose.service: postgres
     spec:
+      initContainers:
+        - name: init-postgres
+          image: busybox
+          command: ['sh', '-c', 'rm -rf /var/lib/postgresql/data/*']
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-cm1
       containers:
         - env:
             - name: POSTGRES_PASSWORD
@@ -33,20 +40,15 @@ spec:
           volumeMounts:
             - mountPath: /docker-entrypoint-initdb.d
               name: postgres-cm0
-              readOnly: true
+              readOnly: false
             - mountPath: /var/lib/postgresql/data
-              name: postgresqldata
-            - mountPath: /etc/postgresql
-              name: config-postgres
-              readOnly: true
+              name: postgres-cm1
+              readOnly: false
       restartPolicy: Always
       volumes:
-        - name: postgresqldata
-          persistentVolumeClaim:
-            claimName: postgresqldata
-        - name: postgres-cm0
-          configMap:
-            name: postgres-cm0
-        - name: config-postgres
-          configMap:
-            name: postgres-cm1
+      - name: postgres-cm1
+        persistentVolumeClaim:
+          claimName: postgresqldata
+      - name: postgres-cm0
+        configMap:
+          name: config-postgres
