@@ -37,6 +37,8 @@ spec:
               value: America/New_York
             - name: NODE_RED_IP
               value: "0.0.0.0"
+            - name: uiHost
+              value: "0.0.0.0"  
           image: nodered/node-red:latest
           name: node-red
           ports:
