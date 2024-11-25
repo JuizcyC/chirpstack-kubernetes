@@ -35,9 +35,9 @@ spec:
               protocol: TCP
           volumeMounts:
             - mountPath: /data
-              name: node-red-cm0
+              name: node-red-data
       restartPolicy: Always
       volumes:
-        - configMap:
-            name: node-red-cm0
-          name: node-red-cm0
+        - name: node-red-data
+          persistentVolumeClaim:
+            claimName: node-red-data-pvc
