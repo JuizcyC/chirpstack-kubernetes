@@ -39,9 +39,10 @@ spec:
               readOnly: false
       restartPolicy: Always
       volumes:
-        - configMap:
-            name: postgres-cm0
-          name: postgres-cm0
-        - configMap:
-            name: postgres-cm1
-          name: postgres-cm1
+      - name: postgresqldata
+        persistentVolumeClaim:
+          claimName: postgresqldata
+  
+      - name: config-postgres-cm
+        configMap:
+            name: config-postgres
