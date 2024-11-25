@@ -1,3 +1,5 @@
+#!/bin/sh
+
 kubectl delete deployments --all --namespace=default
 kubectl delete services --all --namespace=default
 kubectl delete pvc --all --namespace=default
