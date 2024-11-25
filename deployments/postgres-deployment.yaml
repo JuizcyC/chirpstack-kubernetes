@@ -33,8 +33,10 @@ spec:
           volumeMounts:
             - mountPath: /docker-entrypoint-initdb.d
               name: postgres-cm0
+              readOnly: false
             - mountPath: /var/lib/postgresql/data
               name: postgres-cm1
+              readOnly: false
       restartPolicy: Always
       volumes:
         - configMap:
