@@ -30,7 +30,7 @@ spec:
             - name: MQTT_BROKER_HOST
               value: mosquitto
             - name: POSTGRESQL_HOST
-              value: postgres
+              value: postgresql
             - name: REDIS_HOST
               value: redis
           image: chirpstack/chirpstack:4
