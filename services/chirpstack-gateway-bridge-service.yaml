@@ -8,6 +8,7 @@ metadata:
     io.kompose.service: chirpstack-gateway-bridge
   name: chirpstack-gateway-bridge
 spec:
+  type: LoadBalancer
   ports:
     - name: "1700"
       port: 1700
