@@ -25,7 +25,7 @@ spec:
           image: chirpstack/chirpstack-rest-api:4
           args:
             - --server
-            - chirpstack:8080
+            - cpmfgopschirpstack.eastus.cloudapp.azure.com:8080
             - --bind
             - 0.0.0.0:8090
             - --insecure

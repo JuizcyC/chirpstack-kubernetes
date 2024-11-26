@@ -28,11 +28,11 @@ spec:
             - /etc/chirpstack
           env:
             - name: MQTT_BROKER_HOST
-              value: mosquitto.default.svc.cluster.local
+              value: mosquitto
             - name: POSTGRESQL_HOST
-              value: postgresql.default.svc.cluster.local
+              value: postgresql
             - name: REDIS_HOST
-              value: redis.default.svc.cluster.local
+              value: redis
           image: chirpstack/chirpstack:4
           name: chirpstack
           ports:
