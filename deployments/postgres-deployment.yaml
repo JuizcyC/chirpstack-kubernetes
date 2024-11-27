@@ -16,6 +16,19 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/os: linux
+      initContainers:
+        - name: fix-permissions
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+                echo "Fixing permissions..."
+                chown -R 999:999 /var/lib/postgresql/data
+                chmod -R 700 /var/lib/postgresql/data
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresqldata
       containers:
         - name: postgresql
           image: postgres:14-alpine
