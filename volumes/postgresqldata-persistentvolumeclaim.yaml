@@ -1,12 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgresqldata
+  name: private-azurefile-pvc
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: default
-  volumeName: postgresqldata
+  storageClassName: private-azurefile-csi
   resources:
     requests:
-      storage: 1Gi
+      storage: 100Gi
