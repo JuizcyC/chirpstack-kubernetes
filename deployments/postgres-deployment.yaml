@@ -13,7 +13,7 @@ spec:
         io.kompose.service: postgresql
     spec:
       securityContext:
-        fsGroup: 999
+        fsGroup: 999  # Ensure the filesystem is accessible by the postgres user
       initContainers:
         - name: init-postgres
           image: alpine:latest
@@ -46,6 +46,8 @@ spec:
               value: root
             - name: TZ
               value: America/New_York
+            - name: PGDATA
+              value: /var/lib/postgresql/data
           securityContext:
             runAsUser: 999
             runAsGroup: 999
