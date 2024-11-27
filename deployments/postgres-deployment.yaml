@@ -13,7 +13,7 @@ spec:
         io.kompose.service: postgresql
     spec:
       securityContext:
-        fsGroup: 999  # Ensure the filesystem is accessible by the postgres user
+        fsGroup: 999
       initContainers:
         - name: init-postgres
           image: alpine:latest
@@ -35,7 +35,7 @@ spec:
                 echo "Initialization complete."
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: postgresqldata  # Updated PVC reference
+              name: postgresqldata
             - mountPath: /var/run/postgresql
               name: postgresql-run
       containers:
@@ -54,8 +54,8 @@ spec:
             allowPrivilegeEscalation: true
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: postgresqldata  # Updated PVC reference
-            - mountPath: /docker-entkubectl delterypoint-initdb.d
+              name: postgresqldata
+            - mountPath: /docker-entrypoint-initdb.d
               name: postgres-cm0
               readOnly: true
             - mountPath: /etc/postgresql
@@ -64,9 +64,9 @@ spec:
             - mountPath: /var/run/postgresql
               name: postgresql-run
       volumes:
-        - name: postgresqldata  # Use the new PVC name
+        - name: postgresqldata
           persistentVolumeClaim:
-            claimName: postgresqldata # Reference to the PVC created using Azure Files
+            claimName: postgresqldata
         - name: postgres-cm0
           configMap:
             name: postgres-cm0
