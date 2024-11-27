@@ -39,11 +39,11 @@ spec:
                 rm -rf /var/lib/postgresql/data/* && \
                 find /var/lib/postgresql/data/ -mindepth 1 -delete && \
                 mkdir -p /var/lib/postgresql/data && \
-                echo "Changing ownership to 0750:0750..." && \
-                chown -R 0750:0750 /var/lib/postgresql/data && \
+                echo "Changing ownership to postgres:postgres (999:999)..." && \
+                chown -R 999:999 /var/lib/postgresql/data && \
                 echo "Fixing /var/run/postgresql permissions..." && \
                 mkdir -p /var/run/postgresql && \
-                chown -R 0750:0750 /var/run/postgresql && \
+                chown -R 999:999 /var/run/postgresql && \
                 echo "Initialization complete."
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
@@ -59,9 +59,9 @@ spec:
             - name: TZ
               value: America/New_York
           securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            allowPrivilegeEscalation: true
+            runAsUser: 999
+            runAsGroup: 999
+            allowPrivilegeEscalation: false
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
