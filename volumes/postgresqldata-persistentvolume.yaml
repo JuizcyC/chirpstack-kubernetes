@@ -20,8 +20,8 @@ spec:
       name: azure-file-secret
       namespace: default
   mountOptions:
-    - dir_mode=0777
-    - file_mode=0777
+    - dir_mode=0750
+    - file_mode=0750
     - uid=0
     - gid=0
     - mfsymlinks
