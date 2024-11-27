@@ -35,7 +35,7 @@ spec:
                 echo "Initialization complete."
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: private-azurefile-pvc  # Updated PVC reference
+              name: postgresqldata  # Updated PVC reference
             - mountPath: /var/run/postgresql
               name: postgresql-run
       containers:
@@ -54,8 +54,8 @@ spec:
             allowPrivilegeEscalation: true
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: private-azurefile-pvc  # Updated PVC reference
-            - mountPath: /docker-entrypoint-initdb.d
+              name: postgresqldata  # Updated PVC reference
+            - mountPath: /docker-entkubectl delterypoint-initdb.d
               name: postgres-cm0
               readOnly: true
             - mountPath: /etc/postgresql
@@ -64,9 +64,9 @@ spec:
             - mountPath: /var/run/postgresql
               name: postgresql-run
       volumes:
-        - name: private-azurefile-pvc  # Use the new PVC name
+        - name: postgresqldata  # Use the new PVC name
           persistentVolumeClaim:
-            claimName: private-azurefile-pvc  # Reference to the PVC created using Azure Files
+            claimName: postgresqldata # Reference to the PVC created using Azure Files
         - name: postgres-cm0
           configMap:
             name: postgres-cm0
