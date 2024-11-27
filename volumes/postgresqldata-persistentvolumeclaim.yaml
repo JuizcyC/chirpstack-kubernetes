@@ -8,5 +8,3 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: default
-  volumeName: us-chirpstack-postgres-pv
