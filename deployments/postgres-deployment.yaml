@@ -13,7 +13,7 @@ spec:
         io.kompose.service: postgresql
     spec:
       securityContext:
-        fsGroup: 999
+        fsGroup: 1000
       initContainers:
         - name: init-postgres
           image: alpine:latest
@@ -47,8 +47,8 @@ spec:
             - name: TZ
               value: America/New_York
           securityContext:
-            runAsUser: 999
-            runAsGroup: 999
+            runAsUser: 1000
+            runAsGroup: 1000
             allowPrivilegeEscalation: false
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
