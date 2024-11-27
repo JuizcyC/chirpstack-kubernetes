@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: postgresql
 spec:
@@ -7,6 +7,8 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: postgresql
+  serviceName: postgresql
+  podManagementPolicy: Parallel
   template:
     metadata:
       labels:
@@ -64,9 +66,6 @@ spec:
             - mountPath: /var/run/postgresql
               name: postgresql-run
       volumes:
-        - name: postgresqldata
-          persistentVolumeClaim:
-            claimName: postgresqldata
         - name: postgres-cm0
           configMap:
             name: postgres-cm0
@@ -75,3 +74,14 @@ spec:
             name: postgres-cm1
         - name: postgresql-run
           emptyDir: {}
+
+  volumeClaimTemplates:
+    - metadata:
+        name: postgresqldata
+      spec:
+        accessModes:
+          - ReadWriteMany
+        resources:
+          requests:
+            storage: 100Gi
+        storageClassName: azurefile-csi-nfs
