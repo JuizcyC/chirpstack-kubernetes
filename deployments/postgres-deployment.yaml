@@ -13,12 +13,12 @@ spec:
         io.kompose.service: postgresql
     spec:
       securityContext:
-        fsGroup: 750
+        fsGroup: 999
       initContainers:
         - name: init-postgres
           image: alpine:latest
           securityContext:
-            runAsUser: 750
+            runAsUser: 999
           command:
             - sh
             - -c
