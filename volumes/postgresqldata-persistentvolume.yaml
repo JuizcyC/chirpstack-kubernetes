@@ -11,7 +11,7 @@ spec:
   storageClassName: default
   csi:
     driver: file.csi.azure.com
-    volumeHandle: usiotreportingdev#us-chirpstack-postgres-data
+    volumeHandle: PowerPlatform-IOTReporting-dev#usiotreportingdev#us-chirpstack-postgres-data
     volumeAttributes:
       storageAccount: usiotreportingdev
     readOnly: false
