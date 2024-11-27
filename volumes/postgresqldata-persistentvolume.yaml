@@ -22,5 +22,5 @@ spec:
   mountOptions:
     - dir_mode=0777
     - file_mode=0777
-    - uid=999
-    - gid=999
+    - uid=0
+    - gid=0
