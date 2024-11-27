@@ -4,9 +4,9 @@ metadata:
   name: postgresqldata
   namespace: default
 spec:
+  storageClassName: default
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
-  volumeName: us-chirpstack-postgres-pv

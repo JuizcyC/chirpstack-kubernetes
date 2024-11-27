@@ -8,10 +8,10 @@ spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
+  storageClassName: default
   csi:
     driver: file.csi.azure.com
     volumeHandle: usiotreportingdev#us-chirpstack-postgres-data
-    readOnly: false
     volumeAttributes:
       storageAccount: usiotreportingdev
     readOnly: false
