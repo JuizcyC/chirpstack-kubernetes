@@ -22,6 +22,8 @@ spec:
       labels:
         io.kompose.service: postgresql
     spec:
+      securityContext:
+        fsGroup: 999
       initContainers:
         - name: init-postgres
           image: busybox
