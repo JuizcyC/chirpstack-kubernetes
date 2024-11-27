@@ -37,7 +37,8 @@ spec:
                 apk add --no-cache coreutils && \
                 echo "Cleaning up /var/lib/postgresql/data..." && \
                 rm -rf /var/lib/postgresql/data/* && \
-                find /var/lib/postgresql/data/ -mindepth 1 -delete && \
+                rm -rf /var/lib/postgresql/data/.* && \
+                find /var/lib/postgresql/data -mindepth 1 -exec rm -rf {} \; && \
                 mkdir -p /var/lib/postgresql/data/pg_wal && \
                 echo "Changing ownership to 0750:0750..." && \
                 chown -R 0750:0750 /var/lib/postgresql/data && \
