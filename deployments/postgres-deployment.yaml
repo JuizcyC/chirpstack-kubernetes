@@ -18,17 +18,6 @@ spec:
         kubernetes.io/os: linux
       securityContext:
         fsGroup: 999
-      initContainers:
-        - name: fix-permissions
-          image: busybox
-          command:
-            - sh
-            - -c
-            - |
-                echo "Fixing permissions..."
-                chmod -R 0750 /var/lib/postgresql/data
-          securityContext:
-            runAsUser: 0
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: azurefile
