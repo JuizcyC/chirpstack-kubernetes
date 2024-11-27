@@ -15,7 +15,7 @@ spec:
     driver: file.csi.azure.com
     volumeHandle: "PowerPlatform-IOTReporting-dev#usiotreportingdev#us-chirpstack-postgres-data"
     volumeAttributes:
-      shareName: us-chirpstack-postgres-pv
+      shareName:
     nodeStageSecretRef:
       name: azure-file-secret
       namespace: default
