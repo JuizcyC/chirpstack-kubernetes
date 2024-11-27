@@ -45,6 +45,10 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
+            - mountPath: /docker-entrypoint-initdb.d
+              name: postgresqldata
+            - mountPath: /etc/postgresql
+              name: postgresqldata
       containers:
         - env:
             - name: POSTGRES_PASSWORD
@@ -59,21 +63,15 @@ spec:
             allowPrivilegeEscalation: false
           volumeMounts:
             - mountPath: /docker-entrypoint-initdb.d
-              name: postgres-cm0
+              name: postgresqldata
               readOnly: true
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
             - mountPath: /etc/postgresql
-              name: config-postgres
+              name: postgresqldata
               readOnly: true
       restartPolicy: Always
       volumes:
         - name: postgresqldata
           persistentVolumeClaim:
             claimName: postgresqldata
-        - name: postgres-cm0
-          configMap:
-            name: postgres-cm0
-        - name: config-postgres
-          configMap:
-            name: postgres-cm1
