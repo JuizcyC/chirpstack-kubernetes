@@ -24,3 +24,7 @@ spec:
     - file_mode=0750
     - uid=999
     - gid=999
+    - mfsymlinks
+    - cache=strict
+    - nosharesock
+    - nobrl
