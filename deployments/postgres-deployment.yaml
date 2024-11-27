@@ -29,7 +29,7 @@ spec:
           image: busybox
           securityContext:
             runAsUser: 0
-          command: ['sh', '-c', 'rm -rf /var/lib/postgresql/data/* && rm -rf /var/lib/postgresql/data/.*']
+          command: ['sh', '-c', 'find /var/lib/postgresql/data/ -mindepth 1 -delete']
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
