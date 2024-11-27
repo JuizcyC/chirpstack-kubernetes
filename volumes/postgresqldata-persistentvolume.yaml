@@ -8,18 +8,19 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: default
+  storageClassName: my-azurefile
   csi:
     driver: file.csi.azure.com
-    volumeHandle: PowerPlatform-IOTReporting-dev#usiotreportingdev#us-chirpstack-postgres-data
+    volumeHandle: "PowerPlatform-IOTReporting-dev#usiotreportingdev#us-chirpstack-postgres-data"
     volumeAttributes:
       storageAccount: usiotreportingdev
+      shareName: us-chirpstack-postgres-data
     readOnly: false
     nodeStageSecretRef:
       name: azure-file-secret
       namespace: default
   mountOptions:
-  - dir_mode=0777
-  - file_mode=0777
-  - uid=999
-  - gid=999
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=999
+    - gid=999

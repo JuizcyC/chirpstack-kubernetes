@@ -46,7 +46,9 @@ spec:
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
       containers:
-        - env:
+        - name: postgresql
+          image: postgres:14-alpine
+          env:
             - name: POSTGRES_PASSWORD
               value: root
             - name: TZ
@@ -74,4 +76,4 @@ spec:
             name: postgres-cm0
         - name: config-postgres
           configMap:
-            name: config-postgres
+            name: postgres-cm1
