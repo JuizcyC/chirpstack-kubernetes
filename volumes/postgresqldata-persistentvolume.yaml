@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: my-azurefile
+  storageClassName: default
   csi:
     driver: file.csi.azure.com
     volumeHandle: "PowerPlatform-IOTReporting-dev#usiotreportingdev#us-chirpstack-postgres-data"
