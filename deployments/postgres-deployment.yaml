@@ -27,6 +27,8 @@ spec:
       initContainers:
         - name: init-postgres
           image: busybox
+          securityContext:
+            runAsUser: 0
           command: ['sh', '-c', 'rm -rf /var/lib/postgresql/data/*']
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
@@ -39,6 +41,10 @@ spec:
               value: America/New_York
           image: postgres:14-alpine
           name: postgresql
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
+            allowPrivilegeEscalation: false
           volumeMounts:
             - mountPath: /docker-entrypoint-initdb.d
               name: postgres-cm0
