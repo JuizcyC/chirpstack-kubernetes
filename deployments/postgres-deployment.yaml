@@ -26,11 +26,11 @@ spec:
         fsGroup: 999
       initContainers:
         - name: init-postgres
-          image: busybox
+          image: alpine:latest
           securityContext:
             runAsUser: 0
           command: [
-            'sh', '-c', 
+            'sh', '-c',
             'echo "Cleaning up /var/lib/postgresql/data"; \
             rm -rf /var/lib/postgresql/data/*; \
             find /var/lib/postgresql/data/ -mindepth 1 -delete; \
