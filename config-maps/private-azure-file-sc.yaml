@@ -1,21 +1,12 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: private-azurefile-csi
+  name: azurefile-csi-nfs
 provisioner: file.csi.azure.com
 allowVolumeExpansion: true
 parameters:
-  resourceGroup: PowerPlatform-IOTReporting-dev
-  storageAccount: usiotreportingdev
-  server: usiotreportingdev.file.core.windows.net
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
+  protocol: nfs
 mountOptions:
-  - dir_mode=0750
-  - file_mode=0750
-  - uid=999
-  - gid=999
-  - mfsymlinks
-  - cache=strict
-  - nosharesock
+  - nconnect=4
+  - noresvport
   - actimeo=30
