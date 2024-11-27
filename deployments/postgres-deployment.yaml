@@ -13,7 +13,7 @@ spec:
         io.kompose.service: postgresql
     spec:
       securityContext:
-        fsGroup: 1000
+        fsGroup: 0750
       initContainers:
         - name: init-postgres
           image: alpine:latest
@@ -27,11 +27,11 @@ spec:
                 rm -rf /var/lib/postgresql/data/* && \
                 mkdir -p /var/lib/postgresql/data && \
                 chown -R 999:999 /var/lib/postgresql/data && \
-                chmod 750 /var/lib/postgresql/data && \
+                chmod 0750 /var/lib/postgresql/data && \
                 echo "Cleaning up /var/run/postgresql..."
                 mkdir -p /var/run/postgresql && \
                 chown -R 999:999 /var/run/postgresql && \
-                chmod 750 /var/run/postgresql && \
+                chmod 0750 /var/run/postgresql && \
                 echo "Initialization complete."
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
@@ -47,8 +47,8 @@ spec:
             - name: TZ
               value: America/New_York
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+            runAsUser: 0750
+            runAsGroup: 0750
             allowPrivilegeEscalation: false
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
