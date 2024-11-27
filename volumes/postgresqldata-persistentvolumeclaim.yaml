@@ -3,14 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: postgresqldata
 spec:
-  capacity:
-    storage: 100Gi
-  volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
+  resources:
+    requests:
+      storage: 100Gi
   storageClassName: private-azurefile-csi
-  azureFile:
-    secretName: azure-file-secret
-    shareName: us-chirpstack-postgres-data
-    readOnly: false
