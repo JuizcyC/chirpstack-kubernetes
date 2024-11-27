@@ -19,7 +19,7 @@ spec:
       shareName:
     nodeStageSecretRef:
       name: azure-file-secret
-      namespace: azurefile-csi-nfs
+      namespace: default
   mountOptions:
     - dir_mode=0750
     - file_mode=0750
