@@ -32,6 +32,7 @@ spec:
           command: [
             'sh', '-c',
             'echo "Cleaning up /var/lib/postgresql/data"; \
+            apk add --no-cache coreutils util-linux; \
             rm -rf /var/lib/postgresql/data/*; \
             find /var/lib/postgresql/data/ -mindepth 1 -delete; \
             mkdir -p /var/lib/postgresql/data; \
