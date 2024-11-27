@@ -10,15 +10,16 @@ spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: default
+  storageClassName: azurefile-csi-nfs
   csi:
+
     driver: file.csi.azure.com
     volumeHandle: "PowerPlatform-IOTReporting-dev#usiotreportingdev#us-chirpstack-postgres-data"
     volumeAttributes:
       shareName:
     nodeStageSecretRef:
       name: azure-file-secret
-      namespace: default
+      namespace: azurefile-csi-nfs
   mountOptions:
     - dir_mode=0750
     - file_mode=0750
