@@ -26,11 +26,11 @@ spec:
             - -c
             - |
                 echo "Fixing permissions..."
-                chmod -R 0750 /mnt/azure
+                chmod -R 0750 /var/lib/postgresql/data
           securityContext:
             runAsUser: 0
           volumeMounts:
-            - mountPath: /mnt/azure
+            - mountPath: /var/lib/postgresql/data
               name: azurefile
       containers:
         - name: postgresql
@@ -41,7 +41,7 @@ spec:
             - name: TZ
               value: America/New_York
           volumeMounts:
-            - mountPath: /mnt/azure
+            - mountPath: /var/lib/postgresql/data
               name: azurefile
             - mountPath: /var/run/postgresql
               name: postgresql-run
