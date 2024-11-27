@@ -17,3 +17,4 @@ spec:
     readOnly: false
     nodeStageSecretRef:
       name: azure-file-secret
+      namespace: default
