@@ -59,9 +59,9 @@ spec:
             - name: TZ
               value: America/New_York
           securityContext:
-            runAsUser: 999
-            runAsGroup: 999
-            allowPrivilegeEscalation: false
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: true
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
