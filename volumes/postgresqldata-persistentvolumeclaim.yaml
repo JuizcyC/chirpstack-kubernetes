@@ -5,6 +5,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: default
+  volumeName: us-chirpstack-postgres-pv
   resources:
     requests:
       storage: 1Gi
