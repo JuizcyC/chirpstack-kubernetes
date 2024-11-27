@@ -1,14 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
-  labels:
-    io.kompose.service: postgresqldata
-  name: postgresqldata
+  name: us-chirpstack-postgres-pvc
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
-      storage: 100Mi
-status: {}
+      storage: 1Gi
+  volumeName: us-chirpstack-postgres-pv
