@@ -29,7 +29,14 @@ spec:
           image: busybox
           securityContext:
             runAsUser: 0
-          command: ['sh', '-c', 'find /var/lib/postgresql/data/ -mindepth 1 -delete']
+          command: [
+            'sh', '-c', 
+            'echo "Cleaning up /var/lib/postgresql/data"; \
+            rm -rf /var/lib/postgresql/data/*; \
+            find /var/lib/postgresql/data/ -mindepth 1 -delete; \
+            mkdir -p /var/lib/postgresql/data; \
+            chown -R 999:999 /var/lib/postgresql/data'
+          ]
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
