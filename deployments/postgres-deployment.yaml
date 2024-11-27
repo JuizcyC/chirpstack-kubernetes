@@ -39,8 +39,9 @@ spec:
                 rm -rf /var/lib/postgresql/data/* && \
                 find /var/lib/postgresql/data/ -mindepth 1 -delete && \
                 mkdir -p /var/lib/postgresql/data && \
-                echo "Changing ownership to 999:999..." && \
+                echo "Changing ownership and permissions to 0700..." && \
                 chown -R 999:999 /var/lib/postgresql/data && \
+                chmod 0700 /var/lib/postgresql/data && \
                 echo "Initialization complete."
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
