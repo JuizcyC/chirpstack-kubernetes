@@ -39,13 +39,17 @@ spec:
                 rm -rf /var/lib/postgresql/data/* && \
                 find /var/lib/postgresql/data/ -mindepth 1 -delete && \
                 mkdir -p /var/lib/postgresql/data && \
-                echo "Changing ownership and permissions to 0700..." && \
+                echo "Changing ownership to 999:999..." && \
                 chown -R 999:999 /var/lib/postgresql/data && \
-                chmod 0700 /var/lib/postgresql/data && \
+                echo "Fixing /var/run/postgresql permissions..." && \
+                mkdir -p /var/run/postgresql && \
+                chown -R 999:999 /var/run/postgresql && \
                 echo "Initialization complete."
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
+            - mountPath: /var/run/postgresql
+              name: postgresql-run
       containers:
         - name: postgresql
           image: postgres:14-alpine
@@ -67,6 +71,8 @@ spec:
             - mountPath: /etc/postgresql
               name: config-postgres
               readOnly: true
+            - mountPath: /var/run/postgresql
+              name: postgresql-run
       restartPolicy: Always
       volumes:
         - name: postgresqldata
@@ -78,3 +84,5 @@ spec:
         - name: config-postgres
           configMap:
             name: postgres-cm1
+        - name: postgresql-run
+          emptyDir: {}
