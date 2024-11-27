@@ -51,8 +51,6 @@ spec:
               value: root
             - name: TZ
               value: America/New_York
-          image: postgres:14-alpine
-          name: postgresql
           securityContext:
             runAsUser: 999
             runAsGroup: 999
