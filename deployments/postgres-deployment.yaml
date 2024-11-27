@@ -13,7 +13,7 @@ spec:
     matchLabels:
       io.kompose.service: postgresql
   strategy:
-    type: Recreate
+    type: Retain
   template:
     metadata:
       annotations:
