@@ -24,6 +24,7 @@ spec:
             - -c
             - |
                 echo "Cleaning up /var/lib/postgresql/data..."
+                useradd -u 999 postgres
                 rm -rf /var/lib/postgresql/data/* && \
                 mkdir -p /var/lib/postgresql/data && \
                 chown -R 999:999 /var/lib/postgresql/data && \
