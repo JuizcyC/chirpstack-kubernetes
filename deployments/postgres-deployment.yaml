@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: postgresql
 spec:
@@ -7,8 +7,6 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: postgresql
-  serviceName: postgresql
-  podManagementPolicy: Parallel
   template:
     metadata:
       labels:
@@ -75,7 +73,6 @@ spec:
         - name: config-postgres
           configMap:
             name: postgres-cm1
-        - name: postgresql-run
+        - name: postgres-cm1
           emptyDir: {}
 
-  volumeClaimTemplates: []
