@@ -37,7 +37,7 @@ spec:
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
             - mountPath: /var/run/postgresql
-              name: postgresql-run
+              name: postgres-cm1
       containers:
         - name: postgresql
           image: postgres:14-alpine
