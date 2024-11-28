@@ -62,7 +62,7 @@ spec:
               name: config-postgres
               readOnly: true
             - mountPath: /var/run/postgresql
-              name: postgresql-run
+              name: postgres-cm1
       volumes:
         - name: postgresqldata
           persistentVolumeClaim:
