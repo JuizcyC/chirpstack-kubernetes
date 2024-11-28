@@ -62,5 +62,8 @@ spec:
           persistentVolumeClaim:
             claimName: postgresqldata
         - name: config-postgres-cm
-          configMap:
-            name: config-postgres
+            configMap:
+              name: config-postgres
+          - name: postgres-cm1
+            configMap:
+              name: postgres-cm0
