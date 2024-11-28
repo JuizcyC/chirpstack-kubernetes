@@ -52,27 +52,18 @@ spec:
             runAsUser: 999
             runAsGroup: 999
             allowPrivilegeEscalation: true
-          volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: postgresqldata
-            - mountPath: /docker-entrypoint-initdb.d
-              name: postgres-cm0
-              readOnly: true
-            - mountPath: /etc/postgresql
-              name: config-postgres
-              readOnly: true
-            - mountPath: /var/run/postgresql
-              name: postgres-cm1
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgresqldata
+  
+          - mountPath: /docker-entrypoint-initdb.d
+            name: config-postgres-cm
+        
       volumes:
-        - name: postgresqldata
-          persistentVolumeClaim:
-            claimName: postgresqldata
-        - name: postgres-cm0
-          configMap:
-            name: postgres-cm0
-        - name: config-postgres
-          configMap:
-            name: postgres-cm1
-        - name: postgres-cm1
-          emptyDir: {}
-
+      - name: postgresqldata
+        persistentVolumeClaim:
+          claimName: postgresqldata
+  
+      - name: config-postgres-cm
+        configMap:
+            name: config-postgres
