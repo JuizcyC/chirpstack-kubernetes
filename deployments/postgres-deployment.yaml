@@ -1,8 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: postgresql
 spec:
+  serviceName: "postgresql"
   replicas: 1
   selector:
     matchLabels:
@@ -67,15 +68,19 @@ spec:
               name: postgres-cm1
             - mountPath: /var/run/postgresql
               name: writable-postgres-tmp
-      volumes:
-        - name: postgresqldata
-          persistentVolumeClaim:
-            claimName: us-chirpstack-postgres
-        - name: postgres-cm0
-          configMap:
-            name: postgres-cm0
-        - name: postgres-cm1
-          configMap:
-            name: postgres-cm1
-        - name: writable-postgres-tmp
-          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: persistent-storage
+      spec:
+        storageClassName: azurefile-csi-nfs
+        accessModes: ["ReadWriteMany"]
+        resources:
+          requests:
+            storage: 4Gi
+    - metadata:
+        name: writable-postgres-tmp
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
