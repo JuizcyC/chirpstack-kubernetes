@@ -77,7 +77,7 @@ spec:
             name: postgres-cm1
   volumeClaimTemplates:
     - metadata:
-        name: postgresqldata
+        name: us-chirpstack-postgres
       spec:
         storageClassName: azurefile-csi-nfs
         accessModes: ["ReadWriteMany"]
