@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: file.csi.azure.com
-  name: azurefile
+  name: us-chirpstack-postgres-data
 spec:
   capacity:
     storage: 4Gi
