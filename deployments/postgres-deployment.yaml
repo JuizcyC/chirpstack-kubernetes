@@ -56,16 +56,16 @@ spec:
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
             - mountPath: /docker-entrypoint-initdb.d
-              name: config-postgres-cm0
+              name: postgres-cm0
             - mountPath: /docker-entrypoint-initdb.d/extra
-              name: config-postgres-cm1
+              name: postgres-cm1
       volumes:
         - name: postgresqldata
           persistentVolumeClaim:
             claimName: postgresqldata
-        - name: config-postgres-cm0
+        - name: postgres-cm0
           configMap:
             name: postgres-cm0
-        - name: config-postgres-cm1
+        - name: postgres-cm1
           configMap:
             name: postgres-cm1
