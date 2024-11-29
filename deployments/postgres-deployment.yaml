@@ -79,7 +79,9 @@ spec:
     - metadata:
         name: us-chirpstack-postgres
       spec:
-        storageClassName: azurefile-csi-nfs
+        selector:
+          matchLabels:
+            volumeName: us-chirpstack-postgres
         accessModes: ["ReadWriteMany"]
         resources:
           requests:

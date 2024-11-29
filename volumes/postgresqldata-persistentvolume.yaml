@@ -4,6 +4,8 @@ metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: file.csi.azure.com
   name: us-chirpstack-postgres
+  labels:
+    volumeName: us-chirpstack-postgres  # Add this label to match the PVC selector
 spec:
   capacity:
     storage: 4Gi
@@ -15,7 +17,7 @@ spec:
     driver: file.csi.azure.com
     volumeHandle: "{PowerPlatform-IOTReporting-dev}#{usiotreportingdev}#{us-chirpstack-postgres}"
     volumeAttributes:
-      resourceGroup:
+      resourceGroup: 
       shareName: us-chirpstack-postgres
     nodeStageSecretRef:
       name: azure-secret
@@ -28,4 +30,4 @@ spec:
     - mfsymlinks
     - cache=strict
     - nosharesock
-    - nobrl 
+    - nobrl
