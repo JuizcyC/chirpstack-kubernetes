@@ -13,7 +13,7 @@ spec:
   storageClassName: azurefile-csi-nfs
   csi:
     driver: file.csi.azure.com
-    volumeHandle: "PowerPlatfor-IOTReporting-dev#usiotreportingdev#us-chirpstack-postgres"
+    volumeHandle: "PowerPlatform-IOTReporting-dev#usiotreportingdev#us-chirpstack-postgres"
     volumeAttributes:
       resourceGroup:
       shareName: us-chirpstack-postgres
