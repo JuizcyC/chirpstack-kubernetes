@@ -42,12 +42,12 @@ spec:
             - mountPath: /etc/chirpstack
               name: chirpstack-cm0
             - mountPath: /opt/lorawan-devices
-              name: chirpstack-claim1
+              name: chirpstack-cm1
       restartPolicy: Always
       volumes:
         - configMap:
             name: chirpstack-cm0
           name: chirpstack-cm0
-        - name: chirpstack-claim1
+        - name: chirpstack-cm1
           persistentVolumeClaim:
-            claimName: chirpstack-claim1
+            claimName: chirpstack-cm1
