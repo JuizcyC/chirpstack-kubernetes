@@ -10,7 +10,7 @@ spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: azurefile-csi
+  storageClassName: azurefile-csi-nfs
   csi:
     driver: file.csi.azure.com
     volumeHandle: "PowerPlatfor-IOTReporting-dev#usiotreportingdev#us-chirpstack-postgres"
