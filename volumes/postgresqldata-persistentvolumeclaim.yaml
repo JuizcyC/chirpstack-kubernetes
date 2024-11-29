@@ -8,5 +8,3 @@ spec:
   resources:
     requests:
       storage: 4Gi
-  volumeName: us-chirpstack-postegres-pv
-  storageClassName: managed-csi
