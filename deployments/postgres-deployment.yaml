@@ -42,7 +42,7 @@ spec:
                 echo "Initialization complete."
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: postgresqldata
+              name: us-chirpstack-postgres
             - mountPath: /tmp/postgresql
               name: writable-postgres-tmp
       containers:
@@ -61,7 +61,7 @@ spec:
             allowPrivilegeEscalation: true
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: postgresqldata
+              name: us-chirpstack-postgres
             - mountPath: /docker-entrypoint-initdb.d
               name: postgres-cm0
             - mountPath: /docker-entrypoint-initdb.d/extra
