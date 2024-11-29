@@ -79,8 +79,8 @@ spec:
     - metadata:
         name: postgresqldata
       spec:
-        storageClassName: azurefile-csi-nfs  # or the appropriate storage class
-        accessModes: ["ReadWriteOnce"]
+        storageClassName: azurefile-csi-nfs
+        accessModes: ["ReadWriteMany"]
         resources:
           requests:
             storage: 4Gi
