@@ -1,14 +1,12 @@
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: us-chirpstack-postegres-pvc
 metadata:
-  name: postgresqldata
-  namespace: default
+  name: pvc-azuredisk
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 4Gi
-  volumeMode: Filesystem
-  volumeName: postgresqldata-pv
-  storageClassName: postgres-storage-class
+  volumeName: us-chirpstack-postegres-pv
+  storageClassName: managed-csi
