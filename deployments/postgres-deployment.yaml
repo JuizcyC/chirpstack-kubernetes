@@ -28,16 +28,16 @@ spec:
                 mkdir -p /var/lib/postgresql/data && \
                 chown -R 999:999 /var/lib/postgresql/data && \
                 chmod 0750 /var/lib/postgresql/data && \
-                echo "Cleaning up /var/run/postgresql..."
-                mkdir -p /var/run/postgresql && \
-                chown -R 999:999 /var/run/postgresql && \
-                chmod 0750 /var/run/postgresql && \
+                echo "Using writable /tmp directory for postgres runtime files..."
+                cp -r /var/run/postgresql/* /tmp/postgresql/ && \
+                chown -R 999:999 /tmp/postgresql && \
+                chmod 0750 /tmp/postgresql && \
                 echo "Initialization complete."
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresqldata
-            - mountPath: /var/run/postgresql
-              name: postgres-cm1
+            - mountPath: /tmp/postgresql
+              name: writable-postgres-tmp
       containers:
         - name: postgresql
           image: postgres:14-alpine
@@ -59,6 +59,8 @@ spec:
               name: postgres-cm0
             - mountPath: /docker-entrypoint-initdb.d/extra
               name: postgres-cm1
+            - mountPath: /var/run/postgresql
+              name: writable-postgres-tmp
       volumes:
         - name: postgresqldata
           persistentVolumeClaim:
@@ -69,3 +71,5 @@ spec:
         - name: postgres-cm1
           configMap:
             name: postgres-cm1
+        - name: writable-postgres-tmp
+          emptyDir: {}
