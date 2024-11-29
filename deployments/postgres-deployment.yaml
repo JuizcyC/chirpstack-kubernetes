@@ -29,9 +29,15 @@ spec:
                 chown -R 999:999 /var/lib/postgresql/data && \
                 chmod 0750 /var/lib/postgresql/data && \
                 echo "Using writable /tmp directory for postgres runtime files..."
-                cp -r /var/run/postgresql/* /tmp/postgresql/ && \
+                mkdir -p /tmp/postgresql && \
                 chown -R 999:999 /tmp/postgresql && \
                 chmod 0750 /tmp/postgresql && \
+                if [ -d /var/run/postgresql/ ] && [ "$(ls -A /var/run/postgresql/)" ]; then
+                  cp -r /var/run/postgresql/* /tmp/postgresql/ && \
+                  echo "Copied files to /tmp/postgresql/";
+                else
+                  echo "/var/run/postgresql/ is empty or does not exist. Skipping copy.";
+                fi && \
                 echo "Initialization complete."
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
