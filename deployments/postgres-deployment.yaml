@@ -68,6 +68,13 @@ spec:
               name: postgres-cm1
             - mountPath: /var/run/postgresql
               name: writable-postgres-tmp
+      volumes:
+        - name: postgres-cm0
+              configMap:
+                name: postgres-cm0
+        - name: postgres-cm1
+              configMap:
+                name: postgres-cm1
   volumeClaimTemplates:
     - metadata:
         name: postgresqldata
