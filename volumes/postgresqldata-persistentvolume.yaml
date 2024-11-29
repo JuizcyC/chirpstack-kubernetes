@@ -21,7 +21,7 @@ spec:
       shareName: us-chirpstack-postgres
     nodeStageSecretRef:
       name: azure-secret
-      namespace: azurefile-csi-nfs
+      namespace: default
   mountOptions:
     - dir_mode=0750
     - file_mode=0750
