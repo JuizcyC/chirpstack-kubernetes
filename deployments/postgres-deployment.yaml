@@ -70,7 +70,7 @@ spec:
               name: writable-postgres-tmp
   volumeClaimTemplates:
     - metadata:
-        name: persistent-storage
+        name: postgresqldata
       spec:
         storageClassName: azurefile-csi-nfs
         accessModes: ["ReadWriteMany"]
@@ -84,3 +84,10 @@ spec:
         resources:
           requests:
             storage: 1Gi
+  volumes:
+    - name: postgres-cm0
+      configMap:
+        name: postgres-cm0
+    - name: postgres-cm1
+      configMap:
+        name: postgres-cm1
