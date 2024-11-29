@@ -13,7 +13,7 @@ spec:
   storageClassName: azurefile-csi
   csi:
     driver: file.csi.azure.com
-    volumeHandle: "{PowerPlatfor-IOTReporting-dev}#{usiotreportingdev}#{us-chirpstack-postgres-data}"  # make sure this volumeid is unique for every identical share in the cluster
+    volumeHandle: "PowerPlatfor-IOTReporting-dev#usiotreportingdev#us-chirpstack-postgres-data"  # make sure this volumeid is unique for every identical share in the cluster
     volumeAttributes:
       resourceGroup:
       shareName: us-chirpstack-postgres-data
