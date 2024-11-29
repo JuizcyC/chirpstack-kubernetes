@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: us-chirpstack-postgres-data
+  name: us-chirpstack-postgres
 spec:
   accessModes:
     - ReadWriteMany
   storageClassName: azurefile-csi
-  volumeName: us-chirpstack-postgres-data
+  volumeName: us-chirpstack-postgres
   resources:
     requests:
       storage: 4Gi
