@@ -1,7 +1,7 @@
 apiVersion: v1
-kind: us-chirpstack-postegres-pvc
+kind: PersistentVolumeClaim
 metadata:
-  name: pvc-azuredisk
+  name: us-chirpstack-postgres-pvc
 spec:
   accessModes:
     - ReadWriteOnce
