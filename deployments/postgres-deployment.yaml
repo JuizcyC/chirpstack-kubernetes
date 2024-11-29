@@ -70,7 +70,7 @@ spec:
       volumes:
         - name: postgresqldata
           persistentVolumeClaim:
-            claimName: us-chirpstack-postgres-pvc
+            claimName: us-chirpstack-postgres-data
         - name: postgres-cm0
           configMap:
             name: postgres-cm0

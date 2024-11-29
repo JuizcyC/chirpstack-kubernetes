@@ -2,22 +2,30 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   annotations:
-    pv.kubernetes.io/provisioned-by: disk.csi.azure.com
-  name: us-chirpstack-postgres-pv
+    pv.kubernetes.io/provisioned-by: file.csi.azure.com
+  name: azurefile
 spec:
   capacity:
     storage: 4Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: managed-csi
+  storageClassName: azurefile-csi
   csi:
-    driver: disk.csi.azure.com
-    volumeHandle: /subscriptions/1e4e3cbd-99c6-4435-94f1-a2e7106eefc1/resourceGroups/MC_PowerPlatform-IOTReporting-dev_US-IOTReporting-dev_eastus/providers/Microsoft.Compute/disks/us-chirpstack-postgres
+    driver: file.csi.azure.com
+    volumeHandle: "{PowerPlatfor-IOTReporting-dev}#{usiotreportingdev}#{us-chirpstack-postgres-data}"  # make sure this volumeid is unique for every identical share in the cluster
     volumeAttributes:
-      fsType: ext4
+      resourceGroup:
+      shareName: us-chirpstack-postgres-data
+    nodeStageSecretRef:
+      name: azure-secret
+      namespace: default
   mountOptions:
-    - dir_mode=0750
-    - file_mode=0750
-    - uid=999
-    - gid=999
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=0
+    - gid=0
+    - mfsymlinks
+    - cache=strict
+    - nosharesock
+    - nobrl 
