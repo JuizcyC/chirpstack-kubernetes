@@ -5,7 +5,7 @@ metadata:
 provisioner: file.csi.azure.com
 allowVolumeExpansion: true
 parameters:
-  protocol: nfs
+  protocol: ext4
 mountOptions:
   - nconnect=4
   - noresvport
