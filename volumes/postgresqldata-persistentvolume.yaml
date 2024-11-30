@@ -13,6 +13,6 @@ spec:
   storageClassName: managed-csi
   csi:
     driver: disk.csi.azure.com
-    volumeHandle: /subscriptions/<subscriptionID>/resourceGroups/MC_PowerPlatform-IOTReporting-dev_US-IOTReporting-dev_eastus/providers/Microsoft.Compute/disks/us-chirpstack-postgres
+    volumeHandle: /subscriptions/1e4e3cbd-99c6-4435-94f1-a2e7106eefc1/resourceGroups/MC_PowerPlatform-IOTReporting-dev_US-IOTReporting-dev_eastus/providers/Microsoft.Compute/disks/us-chirpstack-postgres
     volumeAttributes:
       fsType: ext4
