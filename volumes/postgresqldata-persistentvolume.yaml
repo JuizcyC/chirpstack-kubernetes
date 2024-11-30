@@ -4,8 +4,6 @@ metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: file.csi.azure.com
   name: us-chirpstack-postgres
-  labels:
-    volumeName: us-chirpstack-postgres  # Add this label to match the PVC selector
 spec:
   capacity:
     storage: 4Gi

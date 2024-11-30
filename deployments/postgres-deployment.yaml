@@ -75,21 +75,3 @@ spec:
         - name: postgres-cm1
           configMap:
             name: postgres-cm1
-  volumeClaimTemplates:
-    - metadata:
-        name: us-chirpstack-postgres
-      spec:
-        selector:
-          matchLabels:
-            volumeName: us-chirpstack-postgres
-        accessModes: ["ReadWriteMany"]
-        resources:
-          requests:
-            storage: 4Gi
-    - metadata:
-        name: writable-postgres-tmp
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 1Gi
