@@ -7,11 +7,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: postgresql
+      app: postgresql
   template:
     metadata:
       labels:
-        io.kompose.service: postgresql
+        app: postgresql
     spec:
       securityContext:
         fsGroup: 999
@@ -42,7 +42,7 @@ spec:
                 echo "Initialization complete."
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: us-chirpstack-postgres
+              name: postgres-data
             - mountPath: /tmp/postgresql
               name: writable-postgres-tmp
       containers:
@@ -51,6 +51,10 @@ spec:
           env:
             - name: POSTGRES_PASSWORD
               value: root
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_DB
+              value: chirpstack
             - name: TZ
               value: America/New_York
             - name: PGDATA
@@ -61,22 +65,26 @@ spec:
             allowPrivilegeEscalation: true
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: us-chirpstack-postgres
+              name: postgres-data
             - mountPath: /docker-entrypoint-initdb.d
-              name: postgres-cm0
-            - mountPath: /docker-entrypoint-initdb.d/extra
-              name: postgres-cm1
+              name: postgres-init-scripts
+            - mountPath: /etc/postgresql
+              name: postgres-config
             - mountPath: /var/run/postgresql
               name: writable-postgres-tmp
       volumes:
-        - name: us-chirpstack-postgres
+        # Persistent Volume Claim for PostgreSQL database data
+        - name: postgres-data
           persistentVolumeClaim:
             claimName: us-chirpstack-postgres-pvc
-        - name: postgres-cm0
+        # ConfigMap for initialization scripts
+        - name: postgres-init-scripts
           configMap:
             name: postgres-cm0
-        - name: postgres-cm1
+        # ConfigMap for PostgreSQL configuration
+        - name: postgres-config
           configMap:
             name: postgres-cm1
+        # Temporary writable directory for runtime files
         - name: writable-postgres-tmp
           emptyDir: {}
