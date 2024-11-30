@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: postgresql
+        io.kompose.service: postgresql
     spec:
       securityContext:
         fsGroup: 999
