@@ -68,7 +68,7 @@ spec:
             - mountPath: /var/lib/postgresql/data
               name: postgres-data
             - mountPath: /docker-entrypoint-initdb.d
-              name: postgres-init-scripts
+              name: postgres-cm0
             - mountPath: /etc/postgresql
               name: postgres-config
             - mountPath: /var/run/postgresql
@@ -79,7 +79,7 @@ spec:
           persistentVolumeClaim:
             claimName: us-chirpstack-postgres-pvc
         # ConfigMap for initialization scripts
-        - name: postgres-init-scripts
+        - name: postgres-cm0
           configMap:
             name: postgres-cm0
         # ConfigMap for PostgreSQL configuration
