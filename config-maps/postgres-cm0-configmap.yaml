@@ -4,17 +4,28 @@ data:
     #!/bin/bash
     set -e
 
+    # Create Chirpstack role and database if they don't already exist
     psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-        create role chirpstack with login password 'chirpstack';
-        create database chirpstack with owner chirpstack;
+        DO \$\$ BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'chirpstack') THEN
+                create role chirpstack with login password 'chirpstack';
+            END IF;
+        END \$\$;
+
+        DO \$\$ BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'chirpstack') THEN
+                create database chirpstack with owner chirpstack;
+            END IF;
+        END \$\$;
     EOSQL
   002-chirpstack_extensions.sh: |
     #!/bin/bash
     set -e
 
+    # Create extensions if they do not exist
     psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname="chirpstack" <<-EOSQL
-        create extension pg_trgm;
-        create extension hstore;
+        CREATE EXTENSION IF NOT EXISTS pg_trgm;
+        CREATE EXTENSION IF NOT EXISTS hstore;
     EOSQL
 kind: ConfigMap
 metadata:
