@@ -69,6 +69,9 @@ spec:
             - mountPath: /var/run/postgresql
               name: writable-postgres-tmp
       volumes:
+      - name: us-chirpstack-postgres-pvc
+        persistentVolumeClaim:
+          claimName: us-chirpstack-postgres-pvc
         - name: postgres-cm0
           configMap:
             name: postgres-cm0
