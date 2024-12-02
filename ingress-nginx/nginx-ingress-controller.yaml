@@ -1,5 +1,4 @@
 apiVersion: v1
-automountServiceAccountToken: true
 kind: ServiceAccount
 metadata:
   labels:
@@ -7,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
+    app.kubernetes.io/version: v1.7.0
   name: ingress-nginx
   namespace: default
 ---
@@ -19,7 +18,7 @@ metadata:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
+    app.kubernetes.io/version: v1.7.0
   name: ingress-nginx
   namespace: default
 rules:
@@ -108,7 +107,7 @@ metadata:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
+    app.kubernetes.io/version: v1.7.0
   name: ingress-nginx
 rules:
 - apiGroups:
@@ -189,7 +188,7 @@ metadata:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
+    app.kubernetes.io/version: v1.7.0
   name: ingress-nginx
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -208,7 +207,7 @@ metadata:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
+    app.kubernetes.io/version: v1.7.0
   name: ingress-nginx-controller
   namespace: default
 spec:
@@ -233,7 +232,7 @@ metadata:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
+    app.kubernetes.io/version: v1.7.0
   name: ingress-nginx-controller
   namespace: default
 spec:
@@ -252,6 +251,7 @@ spec:
         app.kubernetes.io/name: ingress-nginx
         app.kubernetes.io/part-of: ingress-nginx
     spec:
+      serviceAccountName: ingress-nginx
       containers:
       - name: ingress-nginx-controller
         image: k8s.gcr.io/ingress-nginx/controller:v1.7.0
