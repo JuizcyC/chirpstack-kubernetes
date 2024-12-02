@@ -336,4 +336,197 @@ metadata:
   name: ingress-nginx-controller
   namespace: default
 spec:
-  externalTrafficPolicy: Cluster
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  - name: https
+    port: 443
+    targetPort: https
+  selector:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: admission-webhook
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.12.0-beta.0
+  name: ingress-nginx-admission
+  namespace: default
+spec:
+  ports:
+  - name: https
+    port: 443
+    targetPort: https
+  selector:
+    app.kubernetes.io/component: admission-webhook
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.12.0-beta.0
+  name: ingress-nginx-controller
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/instance: ingress-nginx
+      app.kubernetes.io/name: ingress-nginx
+      app.kubernetes.io/part-of: ingress-nginx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: controller
+        app.kubernetes.io/instance: ingress-nginx
+        app.kubernetes.io/name: ingress-nginx
+        app.kubernetes.io/part-of: ingress-nginx
+    spec:
+      containers:
+      - name: ingress-nginx-controller
+        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:1.12.0-beta.0
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 10254
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 10254
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            memory: 2048Mi
+        securityContext:
+          runAsUser: 101
+          allowPrivilegeEscalation: false
+        volumeMounts:
+        - name: ssl-certificate
+          mountPath: /etc/ingress-controller/ssl
+          readOnly: true
+        - name: webhook-cert
+          mountPath: /etc/webhook/certs
+          readOnly: true
+        - name: chirpstack-tls-secret
+          mountPath: /etc/tls
+          readOnly: true
+      volumes:
+      - name: chirpstack-tls-secret
+        secret:
+          secretName: chirpstack-tls-secret
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app.kubernetes.io/component: admission-webhook
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.12.0-beta.0
+  name: ingress-nginx-admission-create
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: admission-webhook
+        app.kubernetes.io/instance: ingress-nginx
+        app.kubernetes.io/name: ingress-nginx
+        app.kubernetes.io/part-of: ingress-nginx
+    spec:
+      containers:
+      - name: ingress-nginx-admission-create
+        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:1.12.0-beta.0
+        command:
+          - "/ingress-nginx-admission"
+          - "--create-certificates=true"
+        volumeMounts:
+        - name: webhook-cert
+          mountPath: /etc/webhook/certs
+      restartPolicy: OnFailure
+  backoffLimit: 4
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app.kubernetes.io/component: admission-webhook
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.12.0-beta.0
+  name: ingress-nginx-admission-patch
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: admission-webhook
+        app.kubernetes.io/instance: ingress-nginx
+        app.kubernetes.io/name: ingress-nginx
+        app.kubernetes.io/part-of: ingress-nginx
+    spec:
+      containers:
+      - name: ingress-nginx-admission-patch
+        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:1.12.0-beta.0
+        command:
+          - "/ingress-nginx-admission"
+          - "--patch-certificates=true"
+        volumeMounts:
+        - name: webhook-cert
+          mountPath: /etc/webhook/certs
+      restartPolicy: OnFailure
+  backoffLimit: 4
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: nginx
+  annotations:
+    ingressclass.k8s.io/is-default-class: "true"
+spec:
+  controller: ingress.k8s.io/nginx
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: ingress-nginx-admission
+webhooks:
+  - name: validation.ingress-nginx.k8s.io
+    clientConfig:
+      service:
+        name: ingress-nginx-admission
+        namespace: default
+        path: /validate-ingress
+      caBundle: |
+        LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURkRENDQWx5Z0F3SUJBZ0lRWTlUNXR4V2lUbnEyZHIveDhEN1YxekFOQmdrcWhraUc5dzBCQVFzRkFEQTMKTVRVd013WURWUVFERXl4amNHMW1aMjl3YzJOb2FYSndjM1JoWTJzdVpXRnpkSFZ6TG1Oc2IzVmtZWEJ3TG1GNgpkWEpsTG1OdmJUQWVGdzB5TkRFeU1ESXhPRE13TWpsYUZ3MHlOVEV5TURJeE9EUXdNamxhTURjeE5UQXpCZ05WCkJBTVRMR053YldabmIzQnpZMmhwY25CemRHRmpheTVsWVhOMGRYTXVZMnh2ZFdSaGNIQXVZWHAxY21VdVkyOXQKTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF4N3RhNUdnMk9RWlcxdm1EVmRjVAp1emRLdzI3Ymd2Q0ozR2ZrSmlHR09nWU9MVzNQZWdBYTFYNmsxSUlzZmUrNU1DOXBXN2lvTVUxVVVxMTFvQ1pwCjY5ZWJoZ3JLeGNDa1ZUb3IzUkJSY1haeHhsOHZJSzVnd1VvZ1dIdVpjaEVVTldSdG43ZkVXa1hkSW01NUlCVGYKRFBhVTNHQkx4WWtSaXNhbUxkQ3EraXIvem1lS0tReEhPaENJQld0dkg3MGhjVTl2dy9SeitVMGYrK2lXaVlwRgpMMGR6akFJOVZaYjFNZllwV29kWjRRQXJPNjB0RTNWQkV4ajlyZUdSZ1gvY0gxeGJvTHVkc3NaYmhvT0owOWd5CjZCWkZNTGVzVG1SaXBkK2Rmd3plTXcrMkk4b1dhcUNOWjRvZ3FYWlMvTUlGQ0JKS0tUTUQxbFNCOGZSSHlGVkkKZ1FJREFRQUJvM3d3ZWpBT0JnTlZIUThCQWY4RUJBTUNCYUF3Q1FZRFZSMFRCQUl3QURBZEJnTlZIU1VFRmpBVQpCZ2dyQmdFRkJRY0RBUVlJS3dZQkJRVUhBd0l3SHdZRFZSMGpCQmd3Rm9BVWN1cy95SFBvK2dLS0lGQis4Wmx4ClFFOXRQV2N3SFFZRFZSME9CQllFRkhMclA4aHo2UG9DaWlCUWZ2R1pjVUJQYlQxbk1BMEdDU3FHU0liM0RRRUIKQ3dVQUE0SUJBUUErbFpMcUtwNU52WVpYa2svS3ZQN3FoMnpMM2lrcDArblo2YldLdyt0TEJkUEZzNnhyblo1MApmNS95cWRmbFpaUFVrY0dWVDZXWkxGRnROU28vMHlZYUJZdVRwaVNvL05pZGtqNzhYUkN6STFYM2xSY3RIa2wwCk1uaStIcnpTR3IvZXc3WGVwMjNNT1hDY1JBSEFhQng4YnBHbC9HL0FjNTBGL2VrN1JtRzltRHF4UE92MVpwMDEKeFNuTDQrVklpMUxhNFNjVXhZYVM1TmZqSnkwdFc0S3RzVHErQ1IxQnhLdUx6MkZGbFAwUm1yaXBBeEhVMFRLNwprT0JMaEhkMGZTSzhoNGtvQjdhMGM2TzVPVDJuSTdDRVg5MTZDeXpUdTlWK1BRaHVxV3NtZ0tyRzV5TGVZYWduCmpDRFlZWUpMOEk2RTEwTjMxVWtEd2RRQ3hEWTV2UnRKCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0=
+    rules:
+    - operations: ["CREATE", "UPDATE"]
+      apiGroups: [""]
+      apiVersions: ["v1"]
+      resources: ["ingresses"]
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
