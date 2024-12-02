@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: disk.csi.azure.com
+  name: us-chirpstack-chirpstack-pv
+spec:
+  capacity:
+    storage: 4Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: managed-csi
+  csi:
+    driver: disk.csi.azure.com
+    volumeHandle: /subscriptions/1e4e3cbd-99c6-4435-94f1-a2e7106eefc1/resourceGroups/MC_PowerPlatform-IOTReporting-dev_US-IOTReporting-dev_eastus/providers/Microsoft.Compute/disks/us-chirpstack-chirpstack
+    volumeAttributes:
+      fsType: ext4

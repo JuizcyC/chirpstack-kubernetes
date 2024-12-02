@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   annotations:
     kompose.cmd: kompose convert
@@ -12,8 +12,6 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: chirpstack
-  strategy:
-    type: Recreate
   template:
     metadata:
       annotations:
@@ -43,11 +41,10 @@ spec:
               name: chirpstack-cm0
             - mountPath: /opt/lorawan-devices
               name: chirpstack-cm1
-      restartPolicy: Always
       volumes:
+        - name: chirpstack-cm1
+          persistentVolumeClaim:
+            claimName: us-chirpstack-chirpstack
         - configMap:
             name: chirpstack-cm0
           name: chirpstack-cm0
-        - name: chirpstack-cm1
-          persistentVolumeClaim:
-            claimName: chirpstack-cm1
