@@ -2,24 +2,24 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: chirpstack-ingress
-  namespace: ingress-nginx  # Ensure this is the correct namespace
+  namespace: default  # Change to the default namespace
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"   # Automatically redirect HTTP to HTTPS
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Automatically redirect HTTP to HTTPS
     nginx.ingress.kubernetes.io/secure-backends: "true"  # Secure the connection to your service
 spec:
   ingressClassName: nginx  # Ensure this is the ingress class you're using
   rules:
-    - host: cpmfgopschirpstack.eastus.cloudapp.azure.com   # Use your external IP address or domain
+    - host: cpmfgopschirpstack.eastus.cloudapp.azure.com  # Use your external IP address or domain
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: chirpstack
+                name: chirpstack  # Ensure this service exists in the default namespace
                 port:
                   number: 8080
   tls:
     - hosts:
         - cpmfgopschirpstack.eastus.cloudapp.azure.com  # Use your external IP or domain here
-      secretName: chirpstack-tls-secret  # Refer to the TLS secret you already created
+      secretName: chirpstack-tls-secret  # Refer to the TLS secret you already created in the default namespace
