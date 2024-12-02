@@ -1,53 +1,18 @@
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx-controller
-  namespace: ingress-nginx
-spec:
-  externalTrafficPolicy: Local
-  ipFamilies:
-  - IPv4
-  ipFamilyPolicy: SingleStack
-  ports:
-  - appProtocol: http
-    name: http
-    port: 80
-    protocol: TCP
-    targetPort: http
-  - appProtocol: https
-    name: https
-    port: 443
-    protocol: TCP
-    targetPort: https
-  selector:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-  type: LoadBalancer
-  loadBalancerIP: 4.157.230.39
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: chirpstack-ingress
-  namespace: default
+  namespace: ingress-nginx  # Ensure this is the correct namespace
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # If using HTTPS
-    nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"   # Automatically redirect HTTP to HTTPS
+    nginx.ingress.kubernetes.io/secure-backends: "true"  # Secure the connection to your service
 spec:
-  ingressClassName: nginx  # Assumes you're using NGINX Ingress Controller
+  ingressClassName: nginx  # Ensure this is the ingress class you're using
   rules:
-    - host: cpmfgopschirpstack.eastus.cloudapp.azure.com # Replace with your domain
+    - host: 4.157.230.39   # Use your external IP address or domain
       http:
         paths:
-          - path: /api
+          - path: /
             pathType: Prefix
             backend:
               service:
@@ -56,5 +21,5 @@ spec:
                   number: 8080
   tls:
     - hosts:
-        - cpmfgopschirpstack.eastus.cloudapp.azure.com  # Replace with your domain
-      secretName: chirpstack-tls-secret  # Ensure you have a TLS secret for HTTPS
+        - 4.157.230.39  # Use your external IP or domain here
+      secretName: chirpstack-tls-secret  # Refer to the TLS secret you already created

@@ -1,14 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: chirpstack
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.34.0 (cbf2835db)
   labels:
     io.kompose.service: chirpstack
+  name: chirpstack
 spec:
-  type: ClusterIP  # Change from LoadBalancer to ClusterIP for internal communication
+  type: ClusterIP  # This is the correct type for working with Ingress controllers
   ports:
     - name: "8080"
-      port: 8080  # Service will expose port 8080
-      targetPort: 8080  # The pod's port to forward to
+      port: 8080
+      targetPort: 8080
   selector:
-    io.kompose.service: chirpstack  # Make sure this selector matches the pods you want to route to
+    io.kompose.service: chirpstack
