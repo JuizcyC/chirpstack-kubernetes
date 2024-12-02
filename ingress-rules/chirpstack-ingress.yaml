@@ -1,21 +1,34 @@
-# NGINX Ingress Controller Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: ingress-nginx-chirpstack
-  namespace: ingress-nginx
   labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.12.0-beta.0
+  name: ingress-nginx-controller
+  namespace: ingress-nginx
 spec:
-  selector:
-    app.kubernetes.io/name: ingress-nginx
+  externalTrafficPolicy: Local
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
   ports:
-    - name: http
-      port: 80
-      targetPort: http
-    - name: https
-      port: 443
-      targetPort: https
+  - appProtocol: http
+    name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - appProtocol: https
+    name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
+  selector:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
   type: LoadBalancer
   loadBalancerIP: 4.157.230.39
 ---
