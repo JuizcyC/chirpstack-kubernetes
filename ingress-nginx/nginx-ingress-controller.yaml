@@ -423,12 +423,6 @@ spec:
           runAsUser: 101
           allowPrivilegeEscalation: false
         volumeMounts:
-        - name: ssl-certificate
-          mountPath: /etc/ingress-controller/ssl
-          readOnly: true
-        - name: webhook-cert
-          mountPath: /etc/webhook/certs
-          readOnly: true
         - name: chirpstack-tls-secret
           mountPath: /etc/tls
           readOnly: true
@@ -504,11 +498,15 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: IngressClass
 metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.12.0-beta.0
   name: nginx
-  annotations:
-    ingressclass.k8s.io/is-default-class: "true"
 spec:
-  controller: ingress.k8s.io/nginx
+  controller: k8s.io/ingress-nginx
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
