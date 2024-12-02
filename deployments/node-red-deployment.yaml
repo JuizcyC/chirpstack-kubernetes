@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   annotations:
     kompose.cmd: kompose convert
@@ -12,8 +12,6 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: node-red
-  strategy:
-    type: Recreate
   template:
     metadata:
       annotations:
@@ -47,8 +45,7 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: node-red-data
-      restartPolicy: Always
       volumes:
         - name: node-red-data
           persistentVolumeClaim:
-            claimName: node-red-data-pvc
+            claimName: us-chirpstack-nodered-pvc

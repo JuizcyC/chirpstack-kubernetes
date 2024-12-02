@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  labels:
-    io.kompose.service: redisdata
-  name: redisdata
+  name: us-chirpstack-redis-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
-  storageClassName: default
+      storage: 4Gi
+  volumeName: us-chirpstack-redis-pv
+  storageClassName: managed-csi
