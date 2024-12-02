@@ -44,7 +44,7 @@ spec:
       volumes:
         - name: chirpstack-cm1
           persistentVolumeClaim:
-            claimName: us-chirpstack-chirpstack
+            claimName: us-chirpstack-chirpstack-pvc
         - configMap:
             name: chirpstack-cm0
           name: chirpstack-cm0
