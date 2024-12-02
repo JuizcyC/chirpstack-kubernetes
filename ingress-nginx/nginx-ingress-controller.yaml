@@ -11,19 +11,6 @@ metadata:
   name: ingress-nginx
   namespace: default
 ---
-apiVersion: v1
-automountServiceAccountToken: true
-kind: ServiceAccount
-metadata:
-  labels:
-    app.kubernetes.io/component: admission-webhook
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx-admission
-  namespace: default
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -115,26 +102,6 @@ rules:
   - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  labels:
-    app.kubernetes.io/component: admission-webhook
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx-admission
-  namespace: default
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - get
-  - create
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
@@ -216,65 +183,6 @@ rules:
   - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
-    app.kubernetes.io/component: admission-webhook
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx-admission
-rules:
-- apiGroups:
-  - admissionregistration.k8s.io
-  resources:
-  - validatingwebhookconfigurations
-  verbs:
-  - get
-  - update
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx
-  namespace: default
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: ingress-nginx
-subjects:
-- kind: ServiceAccount
-  name: ingress-nginx
-  namespace: default
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: admission-webhook
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx-admission
-  namespace: default
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: ingress-nginx-admission
-subjects:
-- kind: ServiceAccount
-  name: ingress-nginx-admission
-  namespace: default
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
@@ -290,38 +198,6 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: ingress-nginx
-  namespace: default
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: admission-webhook
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx-admission
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: ingress-nginx-admission
-subjects:
-- kind: ServiceAccount
-  name: ingress-nginx-admission
-  namespace: default
----
-apiVersion: v1
-data: null
-kind: ConfigMap
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx-controller
   namespace: default
 ---
 apiVersion: v1
@@ -345,28 +221,6 @@ spec:
     targetPort: https
   selector:
     app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/component: admission-webhook
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx-admission
-  namespace: default
-spec:
-  ports:
-  - name: https
-    port: 443
-    targetPort: https
-  selector:
-    app.kubernetes.io/component: admission-webhook
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
@@ -430,101 +284,3 @@ spec:
       - name: chirpstack-tls-secret
         secret:
           secretName: chirpstack-tls-secret
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  labels:
-    app.kubernetes.io/component: admission-webhook
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx-admission-create
-  namespace: default
-spec:
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/component: admission-webhook
-        app.kubernetes.io/instance: ingress-nginx
-        app.kubernetes.io/name: ingress-nginx
-        app.kubernetes.io/part-of: ingress-nginx
-    spec:
-      containers:
-      - name: ingress-nginx-admission-create
-        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:1.12.0-beta.0
-        command:
-          - "/ingress-nginx-admission"
-          - "--create-certificates=true"
-        volumeMounts:
-        - name: webhook-cert
-          mountPath: /etc/webhook/certs
-      restartPolicy: OnFailure
-  backoffLimit: 4
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  labels:
-    app.kubernetes.io/component: admission-webhook
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: ingress-nginx-admission-patch
-  namespace: default
-spec:
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/component: admission-webhook
-        app.kubernetes.io/instance: ingress-nginx
-        app.kubernetes.io/name: ingress-nginx
-        app.kubernetes.io/part-of: ingress-nginx
-    spec:
-      containers:
-      - name: ingress-nginx-admission-patch
-        image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:1.12.0-beta.0
-        command:
-          - "/ingress-nginx-admission"
-          - "--patch-certificates=true"
-        volumeMounts:
-        - name: webhook-cert
-          mountPath: /etc/webhook/certs
-      restartPolicy: OnFailure
-  backoffLimit: 4
----
-apiVersion: networking.k8s.io/v1
-kind: IngressClass
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/part-of: ingress-nginx
-    app.kubernetes.io/version: 1.12.0-beta.0
-  name: nginx
-spec:
-  controller: k8s.io/ingress-nginx
----
-apiVersion: admissionregistration.k8s.io/v1
-kind: ValidatingWebhookConfiguration
-metadata:
-  name: ingress-nginx-admission
-webhooks:
-  - name: validation.ingress-nginx.k8s.io
-    clientConfig:
-      service:
-        name: ingress-nginx-admission
-        namespace: default
-        path: /validate-ingress
-      caBundle: |
-        LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURkRENDQWx5Z0F3SUJBZ0lRWTlUNXR4V2lUbnEyZHIveDhEN1YxekFOQmdrcWhraUc5dzBCQVFzRkFEQTMKTVRVd013WURWUVFERXl4amNHMW1aMjl3YzJOb2FYSndjM1JoWTJzdVpXRnpkSFZ6TG1Oc2IzVmtZWEJ3TG1GNgpkWEpsTG1OdmJUQWVGdzB5TkRFeU1ESXhPRE13TWpsYUZ3MHlOVEV5TURJeE9EUXdNamxhTURjeE5UQXpCZ05WCkJBTVRMR053YldabmIzQnpZMmhwY25CemRHRmpheTVsWVhOMGRYTXVZMnh2ZFdSaGNIQXVZWHAxY21VdVkyOXQKTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF4N3RhNUdnMk9RWlcxdm1EVmRjVAp1emRLdzI3Ymd2Q0ozR2ZrSmlHR09nWU9MVzNQZWdBYTFYNmsxSUlzZmUrNU1DOXBXN2lvTVUxVVVxMTFvQ1pwCjY5ZWJoZ3JLeGNDa1ZUb3IzUkJSY1haeHhsOHZJSzVnd1VvZ1dIdVpjaEVVTldSdG43ZkVXa1hkSW01NUlCVGYKRFBhVTNHQkx4WWtSaXNhbUxkQ3EraXIvem1lS0tReEhPaENJQld0dkg3MGhjVTl2dy9SeitVMGYrK2lXaVlwRgpMMGR6akFJOVZaYjFNZllwV29kWjRRQXJPNjB0RTNWQkV4ajlyZUdSZ1gvY0gxeGJvTHVkc3NaYmhvT0owOWd5CjZCWkZNTGVzVG1SaXBkK2Rmd3plTXcrMkk4b1dhcUNOWjRvZ3FYWlMvTUlGQ0JKS0tUTUQxbFNCOGZSSHlGVkkKZ1FJREFRQUJvM3d3ZWpBT0JnTlZIUThCQWY4RUJBTUNCYUF3Q1FZRFZSMFRCQUl3QURBZEJnTlZIU1VFRmpBVQpCZ2dyQmdFRkJRY0RBUVlJS3dZQkJRVUhBd0l3SHdZRFZSMGpCQmd3Rm9BVWN1cy95SFBvK2dLS0lGQis4Wmx4ClFFOXRQV2N3SFFZRFZSME9CQllFRkhMclA4aHo2UG9DaWlCUWZ2R1pjVUJQYlQxbk1BMEdDU3FHU0liM0RRRUIKQ3dVQUE0SUJBUUErbFpMcUtwNU52WVpYa2svS3ZQN3FoMnpMM2lrcDArblo2YldLdyt0TEJkUEZzNnhyblo1MApmNS95cWRmbFpaUFVrY0dWVDZXWkxGRnROU28vMHlZYUJZdVRwaVNvL05pZGtqNzhYUkN6STFYM2xSY3RIa2wwCk1uaStIcnpTR3IvZXc3WGVwMjNNT1hDY1JBSEFhQng4YnBHbC9HL0FjNTBGL2VrN1JtRzltRHF4UE92MVpwMDEKeFNuTDQrVklpMUxhNFNjVXhZYVM1TmZqSnkwdFc0S3RzVHErQ1IxQnhLdUx6MkZGbFAwUm1yaXBBeEhVMFRLNwprT0JMaEhkMGZTSzhoNGtvQjdhMGM2TzVPVDJuSTdDRVg5MTZDeXpUdTlWK1BRaHVxV3NtZ0tyRzV5TGVZYWduCmpDRFlZWUpMOEk2RTEwTjMxVWtEd2RRQ3hEWTV2UnRKCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0=
-    rules:
-    - operations: ["CREATE", "UPDATE"]
-      apiGroups: [""]
-      apiVersions: ["v1"]
-      resources: ["ingresses"]
-    admissionReviewVersions: ["v1"]
-    sideEffects: None
