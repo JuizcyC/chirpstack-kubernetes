@@ -1,0 +1,47 @@
+# NGINX Ingress Controller Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-nginx-chirpstack
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+spec:
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+    - name: https
+      port: 443
+      targetPort: https
+  type: LoadBalancer
+  loadBalancerIP: 4.157.230.39
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: chirpstack-ingress
+  namespace: chirpstack
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # If using HTTPS
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+spec:
+  ingressClassName: nginx  # Assumes you're using NGINX Ingress Controller
+  rules:
+    - host: cpmfgopschirpstack.eastus.cloudapp.azure.com # Replace with your domain
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: chirpstack
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - cpmfgopschirpstack.eastus.cloudapp.azure.com  # Replace with your domain
+      secretName: chirpstack-tls-secret  # Ensure you have a TLS secret for HTTPS
