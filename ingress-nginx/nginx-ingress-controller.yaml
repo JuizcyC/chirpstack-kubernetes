@@ -212,6 +212,7 @@ metadata:
   namespace: default
 spec:
   type: LoadBalancer
+  loadBalancerIP: 4.157.230.39  # Static IP you created in Azure
   ports:
   - name: http
     port: 80
