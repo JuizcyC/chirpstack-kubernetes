@@ -21,10 +21,3 @@ spec:
             name: chirpstack
             port:
               number: 8080
-      - path: /.well-known/acme-challenge/*  # Match exactly the ACME challenge path
-        pathType: Exact
-        backend:
-          service:
-            name: cm-acme-http-solver-rtwdk  # The service handling the ACME challenge
-            port:
-              number: 8089
