@@ -36,19 +36,6 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
-          readinessProbe:                     # Add readiness probe to check service readiness
-            httpGet:
-              path: /health                   # Replace "/health" with the correct health check path
-              port: 8080
-            initialDelaySeconds: 10           # Delay before the first readiness check
-            periodSeconds: 10                 # Check readiness every 10 seconds
-            failureThreshold: 3
-          livenessProbe:                      # Add liveness probe to monitor container health
-            httpGet:
-              path: /health                   # Replace "/health" with the correct health check path
-              port: 8080
-            initialDelaySeconds: 30           # Allow time for app initialization
-            periodSeconds: 30
           volumeMounts:
             - mountPath: /etc/chirpstack
               name: chirpstack-cm0
