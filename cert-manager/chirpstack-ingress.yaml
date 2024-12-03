@@ -14,10 +14,17 @@ spec:
   - host: cpmfgopschirpstack.eastus.cloudapp.azure.com  # Replace with your domain
     http:
       paths:
-      - path: /
+      - path: /  # Route regular traffic to the Chirpstack app
         pathType: Prefix
         backend:
           service:
             name: chirpstack
             port:
               number: 8080
+      - path: /.well-known/acme-challenge/  # Add the path for ACME challenge
+        pathType: Prefix
+        backend:
+          service:
+            name: cm-acme-http-solver-rtwdk  # The service handling the ACME challenge
+            port:
+              number: 8089
