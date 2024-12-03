@@ -9,6 +9,7 @@ metadata:
   name: chirpstack
 spec:
   type: LoadBalancer
+  loadBalancerIP: 4.157.230.39 
   ports:
     - name: "8080"
       port: 8080
