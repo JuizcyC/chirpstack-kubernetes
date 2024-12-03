@@ -8,7 +8,8 @@ metadata:
     io.kompose.service: chirpstack
   name: chirpstack
 spec:
-  type: LoadBalancer  # Change to LoadBalancer for external access
+  type: LoadBalancer
+  loadBalancerIP: 4.157.230.39 
   ports:
     - name: "8080"
       port: 8080
