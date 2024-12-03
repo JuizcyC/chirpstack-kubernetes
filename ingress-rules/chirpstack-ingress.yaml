@@ -21,4 +21,4 @@ spec:
   tls:
   - hosts:
     - cpmfgopschirpstack.eastus.cloudapp.azure.com
-    secretName: chirpstack
+    secretName: chirpstack-tls-secret
