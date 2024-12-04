@@ -12,5 +12,3 @@ spec:
     - http01:
         ingress:
           class: nginx
-        nodePort:
-          port: 31338
