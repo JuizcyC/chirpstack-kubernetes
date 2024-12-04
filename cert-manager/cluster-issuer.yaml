@@ -12,6 +12,20 @@ spec:
     - http01:
         ingress:
           class: nginx
-        service:
-          name: cm-acme-http-solver
-          port: 8089
+          ingressTemplate:
+            metadata:
+              name: cm-acme-http-solver
+              annotations:
+                kubernetes.io/ingress.class: "nginx"
+            spec:
+              rules:
+              - host: "your-domain.com"  # Replace with your domain
+                http:
+                  paths:
+                  - path: "/.well-known/acme-challenge/"
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: cm-acme-http-solver  # Solver service name
+                        port:
+                          number: 8089  # Static port for the challenge solver
