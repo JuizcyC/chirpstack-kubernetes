@@ -12,3 +12,6 @@ spec:
     - http01:
         ingress:
           class: nginx
+        service:
+          name: cm-acme-http-solver
+          port: 8089
